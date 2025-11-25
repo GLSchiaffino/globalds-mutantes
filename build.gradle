@@ -1,0 +1,77 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.8'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.asciidoctor.jvm.convert' version '4.0.5'
+    id 'jacoco'
+}
+
+group = 'org.globalds'
+version = '0.0.1-SNAPSHOT'
+description = 'Global Desarrollo de Software'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('snippetsDir', file("build/generated-snippets"))
+}
+
+dependencies {
+
+    // --- APP ---
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
+
+    // --- DB ---
+    runtimeOnly 'com.h2database:h2'
+
+    // --- LOMBOK ---
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // --- TESTING ---
+    // Spring Boot test (base)
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // Mockito
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.mockito:mockito-junit-jupiter'
+
+    // WebMvcTest / MockMvc helpers
+    testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure'
+
+    // Jackson para tests JSON
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    // REST Docs (si lo necesitás)
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+    // JUnit Platform Launcher
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    outputs.dir snippetsDir
+    useJUnitPlatform()
+}
+
+tasks.named('asciidoctor') {
+    inputs.dir snippetsDir
+    dependsOn test
+}
