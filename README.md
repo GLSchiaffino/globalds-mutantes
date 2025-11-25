@@ -133,9 +133,7 @@ Retorna estadísticas globales:
 build/reports/jacoco/test/html/index.html
 ```
 
-📷 **(Aquí insertar captura del reporte JaCoCo)**
-
-> *[CAPTURA JACOCO AQUÍ]*
+<img width="1440" height="294" alt="Captura de pantalla 2025-11-25 a la(s) 18 11 56" src="https://github.com/user-attachments/assets/059d82ff-a74f-412f-b736-bba4b7e3a351" />
 
 ---
 
@@ -190,13 +188,11 @@ http://localhost:8080/swagger-ui.html
 
 # 🔄 Diagrama de Secuencia (Completo)
 
-📷 **(Insertar captura del diagrama generado en PlantUML)**
-
-> *[CAPTURA DIAGRAMA DE SECUENCIA AQUÍ]*
+<img width="1829" height="1220" alt="DS-Luca" src="https://github.com/user-attachments/assets/f4f30447-562a-482c-ba36-a9b655b19ff2" />
 
 ---
 
-# 📦 Despliegue en Render (opcional)
+# 📦 Despliegue en Render
 
 ### Build & Run local
 
@@ -228,5 +224,3 @@ Este proyecto cumple con todos los requerimientos del profesor:
 * Cobertura JaCoCo
 * Diagrama profesional
 * Código limpio, dividido en capas y muy fácil de mantener
-
----
