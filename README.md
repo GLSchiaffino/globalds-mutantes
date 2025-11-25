@@ -188,7 +188,7 @@ http://localhost:8080/swagger-ui.html
 
 # 🔄 Diagrama de Secuencia (Completo)
 
-<img width="1829" height="1220" alt="DS-Luca" src="https://github.com/user-attachments/assets/f4f30447-562a-482c-ba36-a9b655b19ff2" />
+<img width="1945" height="1321" alt="DSFINAL" src="https://github.com/user-attachments/assets/e511a4aa-fa3b-473a-8eb7-5c22dc36db17" />
 
 ---
 
