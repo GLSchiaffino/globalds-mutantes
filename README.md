@@ -224,7 +224,7 @@ User: sa
 Password: 
 ```
 
-*(espacio para captura de H2)*
+<img width="1440" height="386" alt="H2" src="https://github.com/user-attachments/assets/cf906d70-726e-43fa-9ce3-1c4d72874424" />
 
 ---
 
@@ -236,7 +236,7 @@ Documentación disponible en:
 http://localhost:8080/swagger-ui/index.html
 ```
 
-*(espacio para captura de Swagger)*
+<img width="1440" height="717" alt="Swagger" src="https://github.com/user-attachments/assets/452fcf1e-be88-4cc3-951c-406f392d8591" />
 
 ---
 
@@ -272,8 +272,6 @@ public String redirectToSwagger() {
 
 Esto permite que **cualquier persona entre directo a Swagger**, sin error.
 
-*(espacio para captura de Render funcionando)*
-
 ---
 
 # 🧪 Tests y Coverage (JaCoCo)
@@ -286,13 +284,13 @@ Esto permite que **cualquier persona entre directo a Swagger**, sin error.
 ✔ Tests de reglas de negocio
 ✔ >80% de cobertura total
 
-*(Espacio para captura de JaCoCo)*
+<img width="1440" height="310" alt="Jacoco" src="https://github.com/user-attachments/assets/eb6a4020-7694-4a04-be6b-c68eb917a900" />
 
 ---
 
 # 🧬 Diagrama de Secuencia Completo
 
-*(espacio reservado para la captura del DS)*
+<img width="1878" height="2215" alt="DS-LucasSchiaffino" src="https://github.com/user-attachments/assets/375f1e76-5afc-433a-ba1d-a22bdae6b8cf" />
 
 ---
 
