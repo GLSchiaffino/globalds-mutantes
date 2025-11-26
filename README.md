@@ -1,88 +1,107 @@
-# 🧬 GlobalDS – API Mutantes
-**Autores:** Lucas Schiaffino  
-**Legajo:** 50711  
+# 🧬 **GlobalDS – API Mutantes**
+
+**Autor:** Lucas Schiaffino
+**Legajo:** 50711
 **Materia:** Global – Desarrollo de Software
-**Año:** 2025  
+**Año:** 2025
 
 ---
 
-## 📌 Descripción del Proyecto
+# 📌 Descripción General
 
-Este proyecto implementa una API REST que permite analizar secuencias de ADN para determinar si un individuo es **mutante** o **humano** según el patrón definido en el enunciado:
+Este proyecto implementa la API REST del desafío **Mutantes**, cuyo objetivo es determinar si una secuencia de ADN corresponde a un **mutante** o a un **humano**.
 
-> Un mutante posee **al menos dos** secuencias de 4 letras iguales y consecutivas (horizontal, vertical o diagonal).
+El análisis se realiza detectando **al menos dos** secuencias de **4 letras consecutivas** (A, T, C, G) de forma:
 
-Además:
-- Las secuencias analizadas se almacenan en una base de datos **H2 en memoria**.
-- El acceso está expuesto mediante **Swagger UI**.
-- Se incluyen endpoints `/mutant` y `/stats`.
-- Se realizaron **validaciones**, **tests unitarios**, **tests de controlador**, **manejo global de excepciones** y reporte de **coverage JaCoCo**.
-- Se añade un mecanismo de **hash SHA-256** para evitar análisis duplicados.
+* ➡️ Horizontal
+* ⬇️ Vertical
+* ↘️ Diagonal descendente
+* ↗️ Diagonal ascendente
 
----
+Además, la aplicación incorpora:
 
-# 🚀 Tecnologías utilizadas
-
-- **Java 21**
-- **Spring Boot 3.3.x**
-- **Gradle**
-- **H2 Database (in-memory)**
-- **Spring Data JPA**
-- **Jakarta Validation**
-- **Swagger / springdoc-openapi**
-- **JUnit 5**
-- **Mockito**
-- **JaCoCo (coverage)**
+* ✔️ Base de datos **H2 en memoria**
+* ✔️ Hash **SHA-256** para evitar análisis repetidos
+* ✔️ Validaciones personalizadas (@Valid + validador propio)
+* ✔️ Manejo global de excepciones
+* ✔️ Endpoints principales + optativos implementados
+* ✔️ **DELETE /mutant/{hash}**
+* ✔️ **/stats con filtros de fecha**
+* ✔️ **Rate Limiting (10 req/min/IP)**
+* ✔️ **Swagger UI** integrado
+* ✔️ **JaCoCo** con +80% de cobertura
+* ✔️ **Despliegue en Render**
+* ✔️ **Diagramas UML** (DS completo)
 
 ---
 
-# 📁 Estructura del Proyecto
+# 🗂️ **Arquitectura del Proyecto (estructura real)**
 
 ```
-
 src/
-├─ main/
-│   ├─ java/org/globalds/mutantes/
-│   │     ├─ controller/
-│   │     │     └─ MutantController.java
-│   │     ├─ dto/
-│   │     │     ├─ DnaRequest.java
-│   │     │     └─ StatsResponse.java
-│   │     ├─ entity/
-│   │     │     └─ DnaRecord.java
-│   │     ├─ exception/
-│   │     │     ├─ DnaHashCalculationException.java
-│   │     │     └─ GlobalExceptionHandler.java
-│   │     ├─ repository/
-│   │     │     └─ DnaRecordRepository.java
-│   │     ├─ service/
-│   │     │     ├─ MutantDetector.java
-│   │     │     ├─ MutantService.java
-│   │     │     └─ StatsService.java
-│   │     ├─ validation/
-│   │     │     ├─ ValidDnaSequence.java
-│   │     │     └─ ValidDnaSequenceValidator.java
-│   │     └─ MutantesApplication.java
-│   └─ resources/
-│         └─ application.properties
-└─ test/
-└─ (Tests unitarios + tests de controlador)
+└── main/
+    ├── java/
+    │   └── org/globalds/mutantes/
+    │       ├── config/
+    │       │   ├── RateLimitFilter.java
+    │       │   └── SwaggerConfig.java
+    │       ├── controller/
+    │       │   ├── HealthController.java
+    │       │   ├── HomeController.java
+    │       │   └── MutantController.java
+    │       ├── dto/
+    │       │   ├── DnaRequest.java
+    │       │   └── StatsResponse.java
+    │       ├── entity/
+    │       │   └── DnaRecord.java
+    │       ├── exception/
+    │       │   ├── DnaHashCalculationException.java
+    │       │   └── GlobalExceptionHandler.java
+    │       ├── repository/
+    │       │   └── DnaRecordRepository.java
+    │       ├── service/
+    │       │   ├── MutantDetector.java
+    │       │   ├── MutantService.java
+    │       │   └── StatsService.java
+    │       ├── validation/
+    │       │   ├── ValidDnaSequence.java
+    │       │   └── ValidDnaSequenceValidator.java
+    │       └── MutantesApplication.java
+    └── resources/
+        └── application.properties
 
-````
+└── test/
+    └── java/
+        └── org/globalds/mutantes/
+            ├── config/
+            │   └── RateLimitFilterTest.java
+            ├── controller/
+            │   ├── MutantControllerTest.java
+            │   └── MutantControllerDeleteTest.java
+            ├── service/
+            │   ├── MutantDetectorTest.java
+            │   ├── MutantServiceTest.java
+            │   ├── MutantServiceDeleteTest.java
+            │   ├── StatsServiceTest.java
+            │   └── StatsServiceWithFilterTest.java
+            └── MutantesApplicationTests.java
+```
 
 ---
 
-# 📬 Endpoints Principales
+# 📬 **Endpoints Implementados**
+
+---
 
 ## ▶️ **POST /mutant**
 
-Analiza un ADN y responde:
+Analiza el ADN.
 
-- **200 OK** → Mutante  
-- **403 Forbidden** → Humano  
-- **400 Bad Request** → Error de validación  
+**200 OK** → mutante
+**403 Forbidden** → humano
+**400 Bad Request** → error de validación
 
-### Ejemplo de Request (mutante)
+Request:
 
 ```json
 {
@@ -95,13 +114,22 @@ Analiza un ADN y responde:
     "TCACTG"
   ]
 }
-````
+```
+
+---
+
+## ❌ **DELETE /mutant/{hash}**
+
+Elimina un ADN previamente analizado (optativo Nivel 2).
+
+**204 No Content** → borrado
+**404 Not Found** → no existe
 
 ---
 
 ## 📊 **GET /stats**
 
-Retorna estadísticas globales:
+Estadísticas globales:
 
 ```json
 {
@@ -113,262 +141,172 @@ Retorna estadísticas globales:
 
 ---
 
-# 🧪 Ejecución de Tests + JaCoCo
+## 📅 **GET /stats?startDate&endDate**
 
-### Ejecutar tests:
-
-```bash
-./gradlew test
-```
-
-### Ejecutar JaCoCo:
-
-```bash
-./gradlew jacocoTestReport
-```
-
-### Abrir reporte:
+Ejemplo:
 
 ```
-build/reports/jacoco/test/html/index.html
+/stats?startDate=2025-01-01&endDate=2025-01-07
 ```
 
-<img width="1440" height="294" alt="Captura de pantalla 2025-11-25 a la(s) 18 11 56" src="https://github.com/user-attachments/assets/059d82ff-a74f-412f-b736-bba4b7e3a351" />
+Retorna **mutantes**, **humanos** y **ratio** dentro de un rango.
 
 ---
 
-# 📝 Validaciones incluidas
+# 🧠 **Lógica del MutantDetector**
 
-* ADN no nulo (`@NotNull`)
-* ADN no vacío
-* Solo caracteres: `A,T,C,G`
-* Matriz **cuadrada** NxN
-* Manejo automático de errores → `GlobalExceptionHandler`
-
----
-
-# 🧬 Lógica de detección de mutantes
-
-Combinación de patrones:
-
-* 🔹 Horizontal
-* 🔹 Vertical
-* 🔹 Diagonal ↘
-* 🔹 Diagonal ↗
-
-Se requiere **≥ 2 secuencias válidas**.
+* Recorre la matriz NxN
+* Evalúa 4 direcciones
+* Usa un contador de secuencias encontradas
+* Si encuentra **> 1**, retorna `true`
 
 ---
 
-# 🗃️ Base de datos H2
+# 🛡️ Validaciones
 
-### Acceso:
+Implementadas con:
+
+* `@Valid`
+* `@NotNull`
+* `@Size`
+* Anotación personalizada `@ValidDnaSequence`
+
+Incluye chequeos:
+
+* Matriz cuadrada NxN
+* ADN no nulo / no vacío
+* Solo caracteres válidos A/T/C/G
+* Tamaño máximo **1000x1000** (optativo Nivel 3)
+
+Errores manejados con:
+
+✔ `GlobalExceptionHandler`
+✔ Mensajes claros para el docente
+
+---
+
+# 🔐 Rate Limiting (Optativo Nivel 2)
+
+Se implementó un filtro:
+
+```
+10 requests / minuto / IP
+```
+
+Excepciones (NO se limita):
+
+* `/h2-console/**`
+* `/swagger-ui/**`
+* `/v3/api-docs/**`
+* `/health`
+
+Respuesta en exceso:
+
+```
+429 Too Many Requests
+```
+
+---
+
+# 🗄️ H2 Database
+
+URL:
 
 ```
 http://localhost:8080/h2-console
 ```
 
-### Configuración:
+Credenciales:
 
 ```
 JDBC URL: jdbc:h2:mem:mutantsdb
 User: sa
-Password: (vacío)
+Password: 
 ```
+
+*(espacio para captura de H2)*
+
 ---
 
 # 📘 Swagger UI
 
-Acceso:
+Documentación disponible en:
 
 ```
-http://localhost:8080/swagger-ui.html
-```
----
-
-# 🔄 Diagrama de Secuencia (Completo)
-
-<img width="1945" height="1321" alt="DSFINAL" src="https://github.com/user-attachments/assets/e511a4aa-fa3b-473a-8eb7-5c22dc36db17" />
-
----
-
-¡Perfecto Guille! Vamos a **actualizar todo correctamente**:
-
-1. ✅ **Modificar el Diagrama de Secuencia** para incluir el `HomeController`
-2. ✅ **Actualizar la sección del README sobre despliegue en Render**
-3. ✅ **Agregar la explicación de por qué existe el HomeController**
-4. ✅ **Dejarlo todo prolijo y listo para entregar**
-
-Voy en orden.
-
----
-
-# 🧬 **1. Nuevo Diagrama de Secuencia COMPLETO (incluye HomeController)**
-
-Aquí está el **DS definitivo**, ya considerando la redirección inicial `/ → /swagger-ui.html`:
-
-### ✔ COPIALO COMPLETO — ESTE ESTÁ PROBADO Y COMPILA PERFECTO
-
-```plantuml
-@startuml
-autonumber
-
-actor Client
-
-participant "HomeController" as H
-participant "MutantController" as C
-participant "Bean Validation" as V
-participant "GlobalExceptionHandler" as EH
-participant "MutantService" as S
-participant "MutantDetector" as D
-participant "DnaRecordRepository" as R
-database "H2 dna_records" as DB
-participant "StatsService" as ST
-
-== Acceso inicial (Render abre /) ==
-
-Client -> H : GET /
-H --> Client : redirect:/swagger-ui.html
-
-== POST /mutant ==
-
-Client -> C : POST /mutant (DnaRequest)
-C -> V : validar DnaRequest
-
-alt ADN inválido
-  V -> EH : MethodArgumentNotValidException
-  EH --> Client : 400 Bad Request\n"Error en el ADN"
-else ADN válido
-  C -> S : analyzeDna(dna)
-  S -> S : hash = sha256(dna)
-
-  S -> R : findByDnaHash(hash)
-
-  alt hash encontrado
-      R --> S : DnaRecord(mutant/human)
-  else no encontrado
-      R --> S : Optional.empty
-      S -> D : isMutant(dna)
-      D --> S : boolean mutant
-
-      S -> R : save(DnaRecord)
-      R -> DB : INSERT
-      DB --> R : OK
-      R --> S : DnaRecord guardado
-  end
-
-  S --> C : resultado boolean
-
-  alt mutant == true
-      C --> Client : 200 OK
-  else
-      C --> Client : 403 Forbidden
-  end
-end
-
-== GET /stats ==
-
-Client -> C : GET /stats
-C -> ST : getStats()
-
-ST -> R : countByIsMutant(true)
-R --> ST : mutants
-
-ST -> R : countByIsMutant(false)
-R --> ST : humans
-
-ST -> ST : ratio = mutants/humans (o mutants si humans=0)
-ST --> C : StatsResponse
-
-C --> Client : 200 OK
-
-@enduml
+http://localhost:8080/swagger-ui/index.html
 ```
 
-📌 *Este DS ahora es EXACTO a tu aplicación actual.*
+*(espacio para captura de Swagger)*
 
 ---
 
-# 📄 **2. Actualización del README — Sección Render**
+# 🔄 Despliegue en Render
 
-Aquí va la **versión corregida**, que incluye:
-
-* El agregado del `HomeController`
-* La comprobación de la ruta de Swagger
-* El detalle del Dockerfile (si se usa)
-* El comando correcto para Render
-* Cómo funciona el root `/` en Render
-
-Pegá esto en tu README, reemplazando la sección anterior:
-
----
-
-## 🚀 Despliegue en Render
-
-Para que la aplicación funcione correctamente en Render, se agregó un `HomeController` que redirige automáticamente la raíz `/` hacia Swagger:
-
-```java
-@GetMapping("/")
-public String redirectToSwagger() {
-    return "redirect:/swagger-ui.html";
-}
-```
-
-Render siempre abre la raíz del servicio (`/`), por lo que sin esta clase la aplicación mostraba una página blanca de error (`Whitelabel Error Page`).
-Gracias a esta redirección, el docente accede directamente a la documentación de la API.
-
----
-
-### 🟦 Build & Run local
+### 🟦 Build local
 
 ```bash
 ./gradlew clean build
 java -jar build/libs/mutantes-0.0.1-SNAPSHOT.jar
 ```
 
----
-
 ### 🟪 Configuración en Render
 
-* **Runtime:** Docker o Native Environment (ambos funcionan)
-* **PORT:** Render inyecta automáticamente la variable `PORT`.
-* **Comando de ejecución:**
+* Render asigna `PORT` automáticamente
+* Comando:
 
-```bash
-java -jar app.jar
+```
+java -jar mutantes-0.0.1-SNAPSHOT.jar
 ```
 
-(o en caso de Dockerfile, ya está configurado)
+### 🟩 HomeController
+
+Render siempre abre `/`.
+Para evitar “Whitelabel Error Page”:
+
+```java
+@GetMapping("/")
+public String redirectToSwagger() {
+    return "redirect:/swagger-ui/index.html";
+}
+```
+
+Esto permite que **cualquier persona entre directo a Swagger**, sin error.
+
+*(espacio para captura de Render funcionando)*
 
 ---
 
-### 🟩 Accesos importantes en Render
+# 🧪 Tests y Coverage (JaCoCo)
 
-**URL base del servicio:**
+✔ Tests de controlador
+✔ Tests de servicio
+✔ Tests de detector
+✔ Tests de repositorio (mockeado)
+✔ Tests de filtros
+✔ Tests de reglas de negocio
+✔ >80% de cobertura total
 
-```
-https://globalds-mutantes.onrender.com
-```
-
-**Swagger UI:**
-
-```
-https://globalds-mutantes.onrender.com/swagger-ui.html
-```
-
-*(La redirección del HomeController garantiza llegar aquí desde “/”)*
+*(Espacio para captura de JaCoCo)*
 
 ---
 
-# ✔️ Conclusión
+# 🧬 Diagrama de Secuencia Completo
 
-Este proyecto cumple con todos los requerimientos del profesor:
+*(espacio reservado para la captura del DS)*
 
-* API REST funcional
+---
+
+# ✅ **Conclusión**
+
+El proyecto cumple **todos los requisitos obligatorios** y **todos los optativos** del programa:
+
+* Arquitectura en capas
 * Validaciones robustas
-* Persistencia en H2
-* Documentación Swagger
-* Tests unitarios y de integración
-* Cobertura JaCoCo
-* Diagrama profesional
-* Código limpio, dividido en capas y muy fácil de mantener
+* Persistencia correctamente implementada
+* Documentación en Swagger
+* Manejo de excepciones
+* Código limpio y escalable
+* Tests + JaCoCo
+* Filtros, caching por hash, y rate limit
+* Despliegue en la nube (Render)
+* Diagramas UML profesionales
