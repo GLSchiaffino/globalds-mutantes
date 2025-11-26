@@ -28,7 +28,7 @@ public class StatsService {
     public StatsResponse getStats(String startDate, String endDate) {
 
         LocalDate start = (startDate != null) ? LocalDate.parse(startDate) : LocalDate.MIN;
-        LocalDate end   = (endDate   != null) ? LocalDate.parse(endDate)   : LocalDate.MAX;
+        LocalDate end   = (endDate != null) ? LocalDate.parse(endDate) : LocalDate.now();
 
         LocalDateTime startDT = start.atStartOfDay();
         LocalDateTime endDT = end.plusDays(1).atStartOfDay();
