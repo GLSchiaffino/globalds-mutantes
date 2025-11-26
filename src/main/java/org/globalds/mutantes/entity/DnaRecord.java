@@ -1,22 +1,23 @@
 package org.globalds.mutantes.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "dna_records")
-@Data
+@Getter
+@Setter
 public class DnaRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String dnaHash;
 
-    @Column(nullable = false)
     private boolean isMutant;
 
     @Column(nullable = false)

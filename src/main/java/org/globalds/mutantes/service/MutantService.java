@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
 import java.util.HexFormat;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +32,19 @@ public class MutantService {
 
                     return mutant;
                 });
+    }
+
+    // EJERCICIO 4 — Lógica de borrado
+    public boolean deleteByHash(String hash) {
+
+        Optional<DnaRecord> record = repository.findByDnaHash(hash);
+
+        if (record.isPresent()) {
+            repository.delete(record.get());
+            return true;
+        }
+
+        return false;
     }
 
     private String sha256(String[] dna) {

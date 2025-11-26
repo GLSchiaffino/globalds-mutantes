@@ -30,7 +30,20 @@ public class MutantController {
     }
 
     @GetMapping("/stats")
-    public ResponseEntity<StatsResponse> stats() {
-        return ResponseEntity.ok(statsService.getStats());
+    public ResponseEntity<StatsResponse> stats(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate
+    ) {
+        return ResponseEntity.ok(statsService.getStats(startDate, endDate));
+    }
+
+    @DeleteMapping("/mutant/{hash}")
+    public ResponseEntity<Void> deleteRecord(@PathVariable String hash) {
+
+        boolean deleted = mutantService.deleteByHash(hash);
+
+        return deleted
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
 }
